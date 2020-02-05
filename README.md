@@ -186,51 +186,79 @@ analogiques ? Quelle librairie permet de les manipuler ?**
 => On peut les utiliser pour allumer des diodes sur un circuit électronique.
 => La librairie WiringPI permet de les manipuler.
 ## Noyau Linux, Pilotes
-Vous êtes face à un ordinateur démarré sous Linux, sans interface graphique ni tournevis,
-comment savoir quelles sont les caractéristiques de sa carte réseau ?
-lspci ou dmesg ou lsmod
-A quoi sert un noyau ? Expliquez le rôle du paramètre « rootdelay » du noyau Linux. Dans
-quel contexte fait-on appel à ce paramètre ?Il s'occupe de l'ordonnancement des processus, de l'accès à la mémoire et du dialogue avec les
-périphériques.
-Le rootdelay permet d'attendre avant de monter /
-On l'utilise lors du boot sur une clé.
-Qu’appelle-t-on module dans le cadre de la construction du noyau d’un système Linux ?
++ **Vous êtes face à un ordinateur démarré sous Linux, sans interface graphique ni tournevis,
+comment savoir quelles sont les caractéristiques de sa carte réseau ?**
+On peut utiliser l'une des commandes suivantes :
+   + `lsmod` : liste les modules chargés dans le noyau.
+   + `dmesg` : affiche les messages systèmes (branchement d'une clé USB, surchauffe du processeur etc.)
+   + `lspci` : liste l'ensemble des périphériques PCI connectés à la carte mère.
+
++ **A quoi sert un noyau ? Expliquez le rôle du paramètre « rootdelay » du noyau Linux. Dans
+quel contexte fait-on appel à ce paramètre ?**
+=> Plusieurs réponses possibles :
+    -> Un noyau s'occupe de l'ordonnancement des processus, de l'accès à la mémoire et du dialogue avec les périphériques.
+    -> Un noyau sert à gérer les ressources matérielles et les tâches à exécuter.
+=> Le rootdelay permet d'attendre avant de monter le système de fichiers. On l'utilise lors du boot sur une clé, pour que la machine puisse avoir le temps de la détecter.
+
++ **Qu’appelle-t-on module dans le cadre de la construction du noyau d’un système Linux ?**
 Un module est un pilote de périphérique que l'on peut charger dynamiquement dans le noyau
 même après le démarrage. Ce sont des fichiers d'extension .ko dans /lib
-Lors de l’utilisation de la commande make menuconfig , quel fichier est manipulé ?
+
++ **Lors de l’utilisation de la commande make menuconfig , quel fichier est manipulé ?**
 Le fichier .config.
-Décrivez la procédure à adopter pour que la carte réseau de ce PC soit prise en charge par
+
++ **Décrivez la procédure à adopter pour que la carte réseau de ce PC soit prise en charge par
 votre version de busybox sur Clé USB : 1) sans recompiler le noyau de la Ubuntu (deux cas
 sont à prévoir) 2) en recompilant un nouveau noyau sans prise en charge des modules
-chargeables.
-1) Il faut ajouter le support des network devices dans BB (?)
-2) Cocher le driver de la carte en question
-Busybox & systèmes embarqués
-Sur quelle mécanisme se fonde la distribution busybox ? Quel est son objectif ? Donnez un
-code d'exemple simple en C permettant de mettre en œuvre ce mécanisme
-Utilisation de liens symboliques pour remplacer les applications tierces
-produire un OS à faible empreinte mémoire
-Exécutable unique
-int main(int argc, char ** argv) {
-printf("Programme : ", argv[0]);
+chargeables.**
+  1) Ajouter le support des cartes réseau dans Busybox (pour le 2e cas, démerdez vous).
+  2) Cocher le driver de la carte en question lors de la configuration du nouveau noyau.
+  
+## Busybox & systèmes embarqués
++ **Sur quelle mécanisme se fonde la distribution busybox ? Quel est son objectif ? Donnez un
+code d'exemple simple en C permettant de mettre en œuvre ce mécanisme.**
+=> Busybox se fonde sur le mécanisme de liens symboliques, couplé au passage d'arguments à un programme en C.
+=> L'objectif est de réduire l'espace mémoire attribué aux commandes Unix et donc au système d'exploitation Linux.
+=> On a donc un exécutable unique nommé busybox et de multiples liens symboliques nommés 'cat', 'cp', 'ls' ...
+=> Exemple de programme en C :
+```C
+int main(int argc, char ** argv) 
+{
+	printf("Programme : ", argv[0]);
 }
-Dans le cadre de l’utilisation d’un OS busybox sur RPI, lors du démarrage d'une machine, le
+```
++ **Dans le cadre de l’utilisation d’un OS busybox sur RPI, lors du démarrage d'une machine, le
 noyau se charge mais un message apparaît, indiquant « no init found », ou « cannot
 execute init ». Proposez trois causes possibles pour ce problème et les manières de le
-résoudre.
-Il manque l'executable init dans sbin (?)
-Démarrage & Architecture de GNU/Linux
-Que contiennent /proc, /sys et /dev et à quoi cela sert-il ?
+résoudre.**
+=> Le fichier init n'existe pas : il faut le recréer ( recompiler busybox ? :eyes: ).
+=> Le fichier init ne possède pas les droits d'exécution : on utilise `chmod +x`
+=> Problème avec le fichier rcS ?? (honnêtement, je sais pas)
+
+## Démarrage & Architecture de GNU/Linux
++ **Que contiennent /proc, /sys et /dev et à quoi cela sert-il ?**
 /proc : Pseudo-système de fichiers d'informations sur les processus
 /sys : Contient les informations systèmes et ses composants
-/dev : Contient les informations sur les périphériques (devices)Qu’est-ce-que le MBR ? Où est-il situé sur un volume de stockage ? Quelle est sa taille en
-octets ? Que contient-il ? Quelles commandes permettent de le manipuler ?
-Master boot record : premier secteur du disque dur et contient la table de partitions. Il fait 512
-octets.
-Qu’est-ce qu’un fichier initrd ? A quoi cela sert-il ?
-(pour initial RAM disk), qui contient quelque binaires, un ensemble de modules vitaux, un
-interpréteur de script et un script de démarrage
-Ce dernier est alors chargé de trouver les bons modules pour la configuration matérielle
+/dev : Contient les informations sur les périphériques (devices)
+
++ **Qu’est-ce-que le MBR ? Où est-il situé sur un volume de stockage ? Quelle est sa taille en
+octets ? Que contient-il ? Quelles commandes permettent de le manipuler ?**
+=> Master boot record.
+=> Situé sur premier secteur du disque dur.
+=> Contient la table de partitions et fait 512 octets.
+=> On peut le manipuler avec `fdisk`.
+
++ **Qu’est-ce qu’un fichier initrd ? A quoi cela sert-il ?**
+=> initrd (pour initial RAM disk) contient quelque binaires, un ensemble de modules vitaux, un
+interpréteur de script et un script de démarrage.
+=> Ce dernier est alors chargé de trouver les bons modules pour la configuration matérielle
 courante, monter le vrai système de fichier, le définir comme nouvelle racine du kernel et
 exécuter le second script de démarrage qu'elle contient.
-Décrire la séquence de démarrage d’un ordinateur sous Linux jusqu’à l’affichage du prompt
+
++ **Décrire la séquence de démarrage d’un ordinateur sous Linux jusqu’à l’affichage du prompt**
+=> 1ère étape : POST (Power On Self Test)
+=> 2e étape : chargement du BIOS (Basic Input/Output System)
+=> 3e étape : chargement du bootloader (ex: grub) situé dans le MBR
+=> 4e étape : chargement du noyau
+=> 5e étape : initrd pour le montage du système de fichiers temporaire.
+=> 6e étape : démarrage du programme init et affichage du prompt.
