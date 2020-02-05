@@ -1,4 +1,5 @@
 
+
 # Questions de DS de LPE
 ## Brève introduction
 Ce document contient la plupart des questions posées à un DS de LPE / RPI / Compilation croisé (Linux pour la L3 en gros).
@@ -15,22 +16,22 @@ dmesg
 
 + **Quelle commande permet de partitionner un disque dur ? Indiquez les contraintes de
 nommage correspondant au partitionnement et la localisation de la table de partitions**
-=> Partitionner : `fdisk <periphérique>`
-=> On ne peut créer que 4 partitions primaires ou 3 primaires et 1 étendue pouvant contenir
+  + Partitionner : `fdisk <periphérique>`
+  + On ne peut créer que 4 partitions primaires ou 3 primaires et 1 étendue pouvant contenir
 60 partitions logiques. Les périphériques sont souvent nommés /dev/sd .
-=> La table de partition est contenue dans le MBR (premier secteur du disque)
+  + La table de partition est contenue dans le MBR (premier secteur du disque)
 
 + **Écrire(s) la ou les commande(s) à exécuter avant d’extraire une clé USB, identifiée comme
 étant sdd, et qui contient deux partitions primaires.**
-=> Vérifier si la clé est montée : `df -h`
-=> Démonter les partitions : `umount`
-=> Si impossibilité : quitter les points de montages des partitions correspondantes
+  + Vérifier si la clé est montée : `df -h`
+  + Démonter les partitions : `umount`
+  + Si impossibilité : quitter les points de montages des partitions correspondantes
 (gestionnaires de fichiers, terminaux etc...)
 
 + **Indiquez la nature des arguments de la commande permettant de monter une partition.
 Dans quel fichier sont définis les montages par défaut ?**
-=> On indique une partition (ex: /dev/sdb1) en argument à mount
-=> /etc/fstab
+  + On indique une partition (ex: /dev/sdb1) en argument à mount
+  + /etc/fstab
 
 + **Quelle commande permet de formater une partition ? Indiquez le rôle du paramètre j que
 nous avons employé en TP**
@@ -68,8 +69,8 @@ mkdir -p /mnt/emb/bin # pour créer le répertoire sans visualisation des erreur
 différence entre la première ligne d’un script shell s’exécutant sur PC sous Linux et un
 script qui doit s’exécuter sur une busybox. Quelle propriété doit avoir un script shell et
 comment la lui attribuer ?**
-=> On spécifie l'interprète pour le script : `#!/bin/bash`
-=> Sous busybox on utilisera : `/bin/sh`
+  + On spécifie l'interprète pour le script : `#!/bin/bash`
+  + Sous busybox on utilisera : `/bin/sh`
 Un script shell doit avoir les droits d'exécution (avec `chmod +x` par exemple)
 
 ## Compilation en C sous Linux, librairies
@@ -86,14 +87,14 @@ outil(s) elles sont destinées : précompilateur, compilateur ou éditeur de lie
 
 + **Quelle est la différence entre les paquets libncurses5 et libncurses5-dev ? Quand doit-on
 respectivement les utiliser ?**
-=> libncurses fournit les <ins>bibliothèques partagées</ins> pour utiliser un terminal tandis que libncurses5-dev fournit les <ins>fichiers d'entête</ins>.
-=> On peut utiliser libncurses5 pour <ins>exécuter des programmes</ins> dépendant de ncurses, et on doit utiliser libncurses pour <ins>développer un programme</ins> utilisant les fonctions de la librairie ncurses.
+  + libncurses fournit les <ins>bibliothèques partagées</ins> pour utiliser un terminal tandis que libncurses5-dev fournit les <ins>fichiers d'entête</ins>.
+  + On peut utiliser libncurses5 pour <ins>exécuter des programmes</ins> dépendant de ncurses, et on doit utiliser libncurses pour <ins>développer un programme</ins> utilisant les fonctions de la librairie ncurses.
 + **Que signifie « produire un exécutable statique » ? Un exécutable « dynamique » ? Qu'est-
 ce qu'un fichier d'entête ? Une librairie ? Quelles sont leurs extensions ? Quelles étapes de
 la production d'un exécutables les concernent respectivement ? Produire un fichier
 makefile pour illustrer vos réponses en présentant les principales options de gcc utiles
 pour ces étapes.**
-=> On suppose qu'on veut compiler un programme test_date.c, utilisant une fonction de la librairie date.c.
+  + On suppose qu'on veut compiler un programme test_date.c, utilisant une fonction de la librairie date.c.
 ```makefile
 all: test_date
 test_date: static dynamic
@@ -122,7 +123,7 @@ addition, etc).
 séparé en plusieurs fichiers source. Une fois le code source assemblé, il faut lier entre eux
 les fichiers objets. L’édition de liens produit un fichier exécutable.
 
-=> Cf ci-dessus pour les options de gcc
+  + Cf ci-dessus pour les options de gcc
 
 + **Comment afficher le processeur pour lequel un exécutable a été compilé ? Comment
 tester si un exécutable a des dépendances ? Comment lister les symboles exportés par une
@@ -135,56 +136,56 @@ Respectivement :
 + **Quelle commande doit-on effectuer pour générer l’exécutable helloDyn en version
 dynamique, à partir d’un fichier source hello.c ? Quelle commande doit-on effectuer pour
 générer l’exécutable helloSta en version statique, à partir d’un fichier source hello.c ?**
-=> Cf le makefile ci-dessus pour cette question
+  + Cf le makefile ci-dessus pour cette question
 
 + **A quoi sert la librairie ncurses ? De quoi a besoin un programme utilisant la librairie
 ncurses pour fonctionner ? Indiquez les étapes nécessaires à la production depuis votre
 poste de travail, puis à l’exécution sur un RPI, d’un programme utilisant la librairie ncurses.**
-=> Ncurses est une bibliothèque qui fournit des fonctions de définition de touches du clavier, de
+  + Ncurses est une bibliothèque qui fournit des fonctions de définition de touches du clavier, de
 couleurs d'écran et permet l'affichage de plusieurs fenêtres sans recouvrement sur un terminal
 texte.
-=> Pour fonctionner, un programme utilisant ncurses a besoin des librairies associées (dynamiques ou statiques).
-=> Production d'un programme ncurses sur un RPI :
-   1. Configuration de la librarie ncurses avec `./configure --prefix=<dest_dir> --host=..linux.. --target=..rpi..`, puis `make` et `make install`.
-   2. Compilation du programme principal avec le compilateur croisé.
+  + Pour fonctionner, un programme utilisant ncurses a besoin des librairies associées (dynamiques ou statiques).
+  + Production d'un programme ncurses sur un RPI :
+     1. Configuration de la librarie ncurses avec `./configure --prefix=<dest_dir> --host=..linux.. --target=..rpi..`, puis `make` et `make install`.
+     2. Compilation du programme principal avec le compilateur croisé.
 
 ## IHM pour l'embarqué
 + **Qu'est-ce que le framebuffer ? Quelles commandes utilisant le framebuffer avez-vous
 utilisé lors des Tps ? Comment savoir si le RPI intègre le support du framebuffer ?**
-=> Plusieurs possibilités de réponses :
+  + Plusieurs possibilités de réponses :
     + Framebuffer permet au noyau d'accéder à la mémoire de la GPU pour produire des interfaces
 graphiques / jeux ....
     + Framebuffer : couche d'abstraction graphique indépendante du matériel pour afficher des
 éléments graphiques dans une console sans avoir besoin de bibliothèques spécifiques à un
 système.
    + Le framebuffer permet de piloter les modes graphiques en haute résolution directement depuis le noyau Linux.
-=> Lors des TPs, on a utilisé fbv (pour afficher des images sur l'écran)
-=> Le RPI intègre le support du framebuffer <=> les framboises s'affichent lors du démarrage
+  + Lors des TPs, on a utilisé fbv (pour afficher des images sur l'écran)
+  + Le RPI intègre le support du framebuffer <  + les framboises s'affichent lors du démarrage
 + **L’exécution d’une application ncurses produit le message « cannot open terminal » et
 s’arrête. Quelle en est la cause et comment résoudre ce problème ?**
-Le fichier <ins>/etc/profile doit être exécutable</ins> et contenir au moins la ligne suivante :
+  + Le fichier <ins>/etc/profile doit être exécutable</ins> et contenir au moins la ligne suivante :
 ```bash
 export TERMINFO=/share/terminfo
 ```
 ## RPI & Compilation Croisée
 + **Qu'est-ce qu'un compilateur croisé ? Comment vérifier pour quel système cible est produit
 un exécutable ?**
-=> Un compilateur croisé produit un code exécutable à destination d'une architecture différente de celle sur laquelle il effectue la compilation.
-=> On vérifie le système cible d'un exécutable à l'aide de `file <fichier>`
+  + Un compilateur croisé produit un code exécutable à destination d'une architecture différente de celle sur laquelle il effectue la compilation.
+  + On vérifie le système cible d'un exécutable à l'aide de `file <fichier>`
 
 + **Comment afficher les paramètres « host » et « target » d’un compilateur ? Que désignent-
 ils et dans quel cas sont-ils différents ?**
-=> Pour afficher les paramètres host et target d'un compilateur, on utilise l'option `-v`
-=> **host** désigne l'architecture de la machine sur laquelle on effectue la compilation du programme.
-=> **target** désigne l'architecture de la machine sur laquelle on effectue l'exécution du programme.
-=> Ces deux paramètres sont différents dans le cas d'un compilateur croisé.
+  + Pour afficher les paramètres host et target d'un compilateur, on utilise l'option `-v`
+  + **host** désigne l'architecture de la machine sur laquelle on effectue la compilation du programme.
+  + **target** désigne l'architecture de la machine sur laquelle on effectue l'exécution du programme.
+  + Ces deux paramètres sont différents dans le cas d'un compilateur croisé.
 
 + **Qu'est-ce que les GPIO (acronyme, définition, usage) ? Contiennent-ils des entrées
 analogiques ? Quelle librairie permet de les manipuler ?**
-=> GPIO signifie <ins>General Purpose Input Output</ins>
-=> Il s'agit des ports d'entrées analogique et numérique pour RPI.
-=> On peut les utiliser pour allumer des diodes sur un circuit électronique.
-=> La librairie WiringPI permet de les manipuler.
+  + GPIO signifie <ins>General Purpose Input Output</ins>
+  + Il s'agit des ports d'entrées analogique et numérique pour RPI.
+  + On peut les utiliser pour allumer des diodes sur un circuit électronique.
+  + La librairie WiringPI permet de les manipuler.
 ## Noyau Linux, Pilotes
 + **Vous êtes face à un ordinateur démarré sous Linux, sans interface graphique ni tournevis,
 comment savoir quelles sont les caractéristiques de sa carte réseau ?**
@@ -195,10 +196,10 @@ On peut utiliser l'une des commandes suivantes :
 
 + **A quoi sert un noyau ? Expliquez le rôle du paramètre « rootdelay » du noyau Linux. Dans
 quel contexte fait-on appel à ce paramètre ?**
-=> Plusieurs réponses possibles :
-    -> Un noyau s'occupe de l'ordonnancement des processus, de l'accès à la mémoire et du dialogue avec les périphériques.
-    -> Un noyau sert à gérer les ressources matérielles et les tâches à exécuter.
-=> Le rootdelay permet d'attendre avant de monter le système de fichiers. On l'utilise lors du boot sur une clé, pour que la machine puisse avoir le temps de la détecter.
+  + Plusieurs réponses possibles :
+      + Un noyau s'occupe de l'ordonnancement des processus, de l'accès à la mémoire et du dialogue avec les périphériques.
+     + Un noyau sert à gérer les ressources matérielles et les tâches à exécuter.
+  + Le rootdelay permet d'attendre avant de monter le système de fichiers. On l'utilise lors du boot sur une clé, pour que la machine puisse avoir le temps de la détecter.
 
 + **Qu’appelle-t-on module dans le cadre de la construction du noyau d’un système Linux ?**
 Un module est un pilote de périphérique que l'on peut charger dynamiquement dans le noyau
@@ -217,10 +218,10 @@ chargeables.**
 ## Busybox & systèmes embarqués
 + **Sur quelle mécanisme se fonde la distribution busybox ? Quel est son objectif ? Donnez un
 code d'exemple simple en C permettant de mettre en œuvre ce mécanisme.**
-=> Busybox se fonde sur le mécanisme de liens symboliques, couplé au passage d'arguments à un programme en C.
-=> L'objectif est de réduire l'espace mémoire attribué aux commandes Unix et donc au système d'exploitation Linux.
-=> On a donc un exécutable unique nommé busybox et de multiples liens symboliques nommés 'cat', 'cp', 'ls' ...
-=> Exemple de programme en C :
+  + Busybox se fonde sur le mécanisme de liens symboliques, couplé au passage d'arguments à un programme en C.
+  + L'objectif est de réduire l'espace mémoire attribué aux commandes Unix et donc au système d'exploitation Linux.
+  + On a donc un exécutable unique nommé busybox et de multiples liens symboliques nommés 'cat', 'cp', 'ls' ...
+  + Exemple de programme en C :
 ```C
 int main(int argc, char ** argv) 
 {
@@ -231,9 +232,9 @@ int main(int argc, char ** argv)
 noyau se charge mais un message apparaît, indiquant « no init found », ou « cannot
 execute init ». Proposez trois causes possibles pour ce problème et les manières de le
 résoudre.**
-=> Le fichier init n'existe pas : il faut le recréer ( recompiler busybox ? :eyes: ).
-=> Le fichier init ne possède pas les droits d'exécution : on utilise `chmod +x`
-=> Problème avec le fichier rcS ?? (honnêtement, je sais pas)
+  + Le fichier init n'existe pas : il faut le recréer ( recompiler busybox ? :eyes: ).
+  + Le fichier init ne possède pas les droits d'exécution : on utilise `chmod +x`
+  + Problème avec le fichier rcS ?? (honnêtement, je sais pas)
 
 ## Démarrage & Architecture de GNU/Linux
 + **Que contiennent /proc, /sys et /dev et à quoi cela sert-il ?**
@@ -243,22 +244,22 @@ résoudre.**
 
 + **Qu’est-ce-que le MBR ? Où est-il situé sur un volume de stockage ? Quelle est sa taille en
 octets ? Que contient-il ? Quelles commandes permettent de le manipuler ?**
-=> Master boot record.
-=> Situé sur premier secteur du disque dur.
-=> Contient la table de partitions et fait 512 octets.
-=> On peut le manipuler avec `fdisk`.
+  + Master boot record.
+  + Situé sur premier secteur du disque dur.
+  + Contient la table de partitions et fait 512 octets.
+  + On peut le manipuler avec `fdisk`.
 
 + **Qu’est-ce qu’un fichier initrd ? A quoi cela sert-il ?**
-=> initrd (pour initial RAM disk) contient quelque binaires, un ensemble de modules vitaux, un
+  + initrd (pour initial RAM disk) contient quelque binaires, un ensemble de modules vitaux, un
 interpréteur de script et un script de démarrage.
-=> Ce dernier est alors chargé de trouver les bons modules pour la configuration matérielle
+  + Ce dernier est alors chargé de trouver les bons modules pour la configuration matérielle
 courante, monter le vrai système de fichier, le définir comme nouvelle racine du kernel et
 exécuter le second script de démarrage qu'elle contient.
 
 + **Décrire la séquence de démarrage d’un ordinateur sous Linux jusqu’à l’affichage du prompt**
-=> 1ère étape : POST (Power On Self Test)
-=> 2e étape : chargement du BIOS (Basic Input/Output System)
-=> 3e étape : chargement du bootloader (ex: grub) situé dans le MBR
-=> 4e étape : chargement du noyau
-=> 5e étape : initrd pour le montage du système de fichiers temporaire.
-=> 6e étape : démarrage du programme init et affichage du prompt.
+  + 1ère étape : POST (Power On Self Test)
+  + 2e étape : chargement du BIOS (Basic Input/Output System)
+  + 3e étape : chargement du bootloader (ex: grub) situé dans le MBR
+  + 4e étape : chargement du noyau
+  + 5e étape : initrd pour le montage du système de fichiers temporaire.
+  + 6e étape : démarrage du programme init et affichage du prompt.
