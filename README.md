@@ -188,21 +188,31 @@ analogiques ? Quelle librairie permet de les manipuler ?**
 ## Noyau Linux, Pilotes
 Vous êtes face à un ordinateur démarré sous Linux, sans interface graphique ni tournevis,
 comment savoir quelles sont les caractéristiques de sa carte réseau ?
+
 lspci ou dmesg ou lsmod
+
 A quoi sert un noyau ? Expliquez le rôle du paramètre « rootdelay » du noyau Linux. Dans
-quel contexte fait-on appel à ce paramètre ?Il s'occupe de l'ordonnancement des processus, de l'accès à la mémoire et du dialogue avec les
+quel contexte fait-on appel à ce paramètre ?
+
+Il s'occupe de l'ordonnancement des processus, de l'accès à la mémoire et du dialogue avec les
 périphériques.
 Le rootdelay permet d'attendre avant de monter /
 On l'utilise lors du boot sur une clé.
+
 Qu’appelle-t-on module dans le cadre de la construction du noyau d’un système Linux ?
+
 Un module est un pilote de périphérique que l'on peut charger dynamiquement dans le noyau
 même après le démarrage. Ce sont des fichiers d'extension .ko dans /lib
+
 Lors de l’utilisation de la commande make menuconfig , quel fichier est manipulé ?
+
 Le fichier .config.
+
 Décrivez la procédure à adopter pour que la carte réseau de ce PC soit prise en charge par
 votre version de busybox sur Clé USB : 1) sans recompiler le noyau de la Ubuntu (deux cas
 sont à prévoir) 2) en recompilant un nouveau noyau sans prise en charge des modules
 chargeables.
+
 1) Il faut ajouter le support des network devices dans BB (?)
 2) Cocher le driver de la carte en question
 Busybox & systèmes embarqués
@@ -214,23 +224,32 @@ Exécutable unique
 int main(int argc, char ** argv) {
 printf("Programme : ", argv[0]);
 }
+
 Dans le cadre de l’utilisation d’un OS busybox sur RPI, lors du démarrage d'une machine, le
 noyau se charge mais un message apparaît, indiquant « no init found », ou « cannot
 execute init ». Proposez trois causes possibles pour ce problème et les manières de le
 résoudre.
 Il manque l'executable init dans sbin (?)
 Démarrage & Architecture de GNU/Linux
+
 Que contiennent /proc, /sys et /dev et à quoi cela sert-il ?
+
 /proc : Pseudo-système de fichiers d'informations sur les processus
 /sys : Contient les informations systèmes et ses composants
-/dev : Contient les informations sur les périphériques (devices)Qu’est-ce-que le MBR ? Où est-il situé sur un volume de stockage ? Quelle est sa taille en
+/dev : Contient les informations sur les périphériques (devices)
+
+Qu’est-ce-que le MBR ? Où est-il situé sur un volume de stockage ? Quelle est sa taille en
 octets ? Que contient-il ? Quelles commandes permettent de le manipuler ?
+
 Master boot record : premier secteur du disque dur et contient la table de partitions. Il fait 512
 octets.
+
 Qu’est-ce qu’un fichier initrd ? A quoi cela sert-il ?
+
 (pour initial RAM disk), qui contient quelque binaires, un ensemble de modules vitaux, un
 interpréteur de script et un script de démarrage
 Ce dernier est alors chargé de trouver les bons modules pour la configuration matérielle
 courante, monter le vrai système de fichier, le définir comme nouvelle racine du kernel et
 exécuter le second script de démarrage qu'elle contient.
+
 Décrire la séquence de démarrage d’un ordinateur sous Linux jusqu’à l’affichage du prompt
