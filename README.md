@@ -185,9 +185,9 @@ int main(int argc, char ** argv)
 }
 ```
 + **Dans le cadre de l’utilisation d’un OS busybox sur RPI, lors du démarrage d'une machine, le noyau se charge mais un message apparaît, indiquant « no init found », ou « cannot execute init ». Proposez trois causes possibles pour ce problème et les manières de le résoudre.**
-  + Le fichier init n'existe pas : il faut le recréer ( recompiler busybox ? :eyes: ).
-  + Le fichier init ne possède pas les droits d'exécution : on utilise `chmod +x`
-  + Problème avec le fichier rcS ?? (honnêtement, je sais pas)
+  + La description du système de fichiers est incorrect : modifier le fichier cmdline.txt de la 1ère partition (on doit avoir les paramètres `root=mmcblk0p2` et `rootfstype=ext4`
+  + Le système de fichiers est corrompu : on utilise la commande `e2fsck` sur le système de fichiers.
+  + Absence ou modification du fichier init (donné par le lien symbolique /sbin/init en général) : rétablir le fichier ou réinstaller l'OS.
 
 ## Démarrage & Architecture de GNU/Linux
 + **Que contiennent /proc, /sys et /dev et à quoi cela sert-il ?**
