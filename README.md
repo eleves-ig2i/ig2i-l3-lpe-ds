@@ -181,7 +181,7 @@ Le fichier .config.
 ```C
 int main(int argc, char ** argv) 
 {
-	printf("Programme : ", argv[0]);
+	printf("Programme : %s", argv[0]);
 }
 ```
 + **Dans le cadre de l’utilisation d’un OS busybox sur RPI, lors du démarrage d'une machine, le noyau se charge mais un message apparaît, indiquant « no init found », ou « cannot execute init ». Proposez trois causes possibles pour ce problème et les manières de le résoudre.**
@@ -191,9 +191,9 @@ int main(int argc, char ** argv)
 
 ## Démarrage & Architecture de GNU/Linux
 + **Que contiennent /proc, /sys et /dev et à quoi cela sert-il ?**
-/proc : Pseudo-système de fichiers d'informations sur les processus
-/sys : Contient les informations systèmes et ses composants
-/dev : Contient les informations sur les périphériques (devices)
+  + /proc : Pseudo-système de fichiers d'informations sur les processus
+  + /sys : Contient les informations systèmes et ses composants
+  + /dev : Contient les informations sur les périphériques (devices)
 
 + **Qu’est-ce-que le MBR ? Où est-il situé sur un volume de stockage ? Quelle est sa taille en octets ? Que contient-il ? Quelles commandes permettent de le manipuler ?**
   + Master boot record.
