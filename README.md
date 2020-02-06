@@ -98,17 +98,19 @@ pour ces étapes.**
 ```makefile
 all: test_date
 test_date: static dynamic
-    gcc test_date.c libdate.a # production de l'exécutable statique
-    gcc -ldate -L. test_date.c # production de l'exécutable dynamique
+	gcc -c test_date.c
+    gcc -static -L. test_date.o test_date_src # production de l'exécutable statique
+    gcc -L. test_date.o test_date_dyn -ldate # production de l'exécutable dynamique
 
-static: libdate.o
-    ar -rv libdate.a libdate.o # génération de la librairie statique
+static: date.o
+    ar -qvs libdate.a date.o # génération de la librairie statique
 
-dynamic: libdate.o
-    gcc -o libdate.so date.o -shared -fPIC # génération de la librairie dynamique
+dynamic: date.o
+    gcc -shared date_fPIC.o -o libdate.so # génération de la librairie dynamique
 
-libdate.o: date.c # remarque : on suppose que date.h est notre fichier d'entête
-    gcc -c date.c # preprocessing
+date.o: date.c # remarque : on suppose que date.h est notre fichier d'entête
+    gcc -c date.c -o date.o # compilation
+    gcc -c date.c -fPIC date_fPIC.o # compilation pour la librairie dynamique
 ```
 + **Décrire ce qui se passe lors des étapes de production d’un exécutable : précompilation,
 compilation et édition de liens. Donnez les 5 options principalement utilisées par le gcc
