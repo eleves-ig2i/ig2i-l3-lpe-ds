@@ -14,7 +14,7 @@ mount
 dmesg
 ```
 
-+ **Quelle commande affiche la liste des montages en cours ? Comment n'afficher que les montages qui concernent des disques de type "sd" ?
++ **Quelle commande affiche la liste des montages en cours ? Comment n'afficher que les montages qui concernent des disques de type "sd" ?**
   + La commande `df`.
   + La commande `df | grep sd`
 
@@ -132,7 +132,7 @@ Respectivement :
   2. make CONFIG_PREFIX=<point_montage> -j4 # compilation des sources
   3. make install # installation des exéutables et librairies
   
-+ **A partir d'un fichier source hello.c, quelle commande doit-on effectuer pour :
++ **A partir d'un fichier source hello.c, quelle commande doit-on effectuer pour :**
   + **Générer l'exécutable helloDyn en version dynamique ?**
   + **Générer l'exécutable helloSta en version statique ?**
   + **Connaître la liste des librairies dynamiques partagées nécessaires à l'exécution du programme helloDyn ?**
