@@ -14,6 +14,10 @@ mount
 dmesg
 ```
 
++ **Quelle commande affiche la liste des montages en cours ? Comment n'afficher que les montages qui concernent des disques de type "sd" ?
++ La commande `df`.
++ La commande `df | grep sd`
+
 + **Quelle commande permet de partitionner un disque dur ? Indiquez les contraintes de nommage correspondant au partitionnement et la localisation de la table de partitions**
   + Partitionner : `fdisk <periphérique>`
   + On ne peut créer que 4 partitions primaires ou 3 primaires et 1 étendue pouvant contenir
@@ -118,6 +122,25 @@ Respectivement :
   + Production d'un programme ncurses sur un RPI :
      1. Configuration de la librarie ncurses avec `./configure --prefix=<dest_dir> --host=..linux.. --target=..rpi..`, puis `make` et `make install`.
      2. Compilation du programme principal avec le compilateur croisé.
+     
++ **L'exécution d'une application ncurses produit le message "cannot open terminal" et s'arrête. Quelle en est la cause et comment résoudre ce problème ?**
+  + La base de données des terminaux "terminfo" n'est pas présente sur le système cible OU les variables d'environnement TERMINFO et TERM sont mal définies.
+  + Pour résoudre ce problème, on installe cette base de données et définit TERMINFO pour qu'elle pointe vers le répertoire où est installé "terminfo" et TERM de façon désignant la valeur d'un terminal présent dans la base.
+  
++ **Indiquez quelle est la procédure généralement appliquée pour produire et installer un programme à partir de ses sources. Précisez les commandes et arguments utilisés.**
+  1. make menuconfig # configuration du programme
+  2. make CONFIG_PREFIX=<point_montage> -j4 # compilation des sources
+  3. make install # installation des exéutables et librairies
+  
++ **A partir d'un fichier source hello.c, quelle commande doit-on effectuer pour :
+  + **Générer l'exécutable helloDyn en version dynamique ?**
+  + **Générer l'exécutable helloSta en version statique ?**
+  + **Connaître la liste des librairies dynamiques partagées nécessaires à l'exécution du programme helloDyn ?**
++ **Qu'indique la commande précédente appliquée à l'exécutable helloSta ?**
+  + `gcc hello.c -o helloDyn`
+  + `gcc -static hello.c -o helloSta
+  + `ldd helloDyn`
+  + helloSta n'est pas un exécutable dynamique.
 
 ## IHM pour l'embarqué
 + **Qu'est-ce que le framebuffer ? Quelles commandes utilisant le framebuffer avez-vous utilisé lors des Tps ? Comment savoir si le RPI intègre le support du framebuffer ?**
