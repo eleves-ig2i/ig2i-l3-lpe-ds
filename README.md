@@ -14,8 +14,7 @@ mount
 dmesg
 ```
 
-+ **Quelle commande permet de partitionner un disque dur ? Indiquez les contraintes de
-nommage correspondant au partitionnement et la localisation de la table de partitions**
++ **Quelle commande permet de partitionner un disque dur ? Indiquez les contraintes de nommage correspondant au partitionnement et la localisation de la table de partitions**
   + Partitionner : `fdisk <periphérique>`
   + On ne peut créer que 4 partitions primaires ou 3 primaires et 1 étendue pouvant contenir
 60 partitions logiques. Les périphériques sont souvent nommés /dev/sd .
@@ -27,7 +26,7 @@ nommage correspondant au partitionnement et la localisation de la table de parti
   + Si impossibilité : quitter les points de montages des partitions correspondantes
 (gestionnaires de fichiers, terminaux etc...)
 
-+ **Indiquez la nature des arguments de la commande permettant de monter une partition. Dans quel fichier sont définis les montages par défaut ?**
++ **Indiquez la nature des arguments de la commande permettant de monter une partition. Dans quel fichier sont définis et comment sont organisés les montages par défaut ?**
   + On indique une partition (ex: /dev/sdb1) en argument à mount
   + /etc/fstab
 
@@ -59,6 +58,7 @@ if [[ -d /mnt/emb/bin ]] # pour vérifier la présence du dossier
 mkdir -p /mnt/emb/bin # pour créer le répertoire sans visualisation des erreurs
 ```
 + **Décrire l’information que doit porter la première ligne d’un script shell. Quelle est la différence entre la première ligne d’un script shell s’exécutant sur PC sous Linux et un script qui doit s’exécuter sur une busybox. Quelle propriété doit avoir un script shell et comment la lui attribuer ?**
++ **Donner un exemple de la première ligne (généralement) présente dans un script shell. Quelle propriété doit avoir ce script et comment la lui attribuer ?**
   + On spécifie l'interprète pour le script : `#!/bin/bash`
   + Sous busybox on utilisera : `/bin/sh`
 Un script shell doit avoir les droits d'exécution (avec `chmod +x` par exemple)
