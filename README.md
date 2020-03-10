@@ -2,7 +2,7 @@
 
 # Questions de DS de LPE
 ## Brève introduction
-Ce document contient la plupart des questions posées à un DS de LPE / RPI / Compilation croisé (Linux pour la L3 en gros).
+Ce document contient la plupart des questions posées à un DS de LPE / RPI / Compilation croisée (Linux pour la L3 en gros) de 2015 à 2020.
 Gros remerciements à Guillaume Carlier pour sa participation à ce document. Grâce à lui, vous éviterez un rattrapage de plus à 2i ! :)
 Le répertoire libdate contenu dans le git, contient un exemple de makefile (à compléter s'il manque des trucs).
 ## Clé USB / Partitions / Montages / Démontages
@@ -44,7 +44,7 @@ dmesg
 	+ une partition ext4 : `mkfs.ext4 <partition>`
 
 + **Dessiner de manière synthétique un périphérique de stockage en faisant apparaître la manière dont grub y est installé.**
-https://i.imgur.com/m2A87TC.png
+  + https://i.imgur.com/m2A87TC.png
 
 ### Scripts
 + **Dans un script shell, comment récupérer la réponse à une question d’un utilisateur (par exemple : « voulez-vous recompiler le noyau [Y-n] ? ») et déclencher un traitement par défaut dans le cas où il saisit autre chose que « n » ?**
@@ -65,7 +65,7 @@ mkdir -p /mnt/emb/bin # pour créer le répertoire sans visualisation des erreur
 + **Donner un exemple de la première ligne (généralement) présente dans un script shell. Quelle propriété doit avoir ce script et comment la lui attribuer ?**
   + On spécifie l'interprète pour le script : `#!/bin/bash`
   + Sous busybox on utilisera : `/bin/sh`
-Un script shell doit avoir les droits d'exécution (avec `chmod +x` par exemple)
+  + Un script shell doit avoir les droits d'exécution (avec `chmod +x` par exemple)
 
 ## Compilation en C sous Linux, librairies
 + **Donnez quatre options utilisées par le compilateur gcc et indiquez précisément à quel(s) outil(s) elles sont destinées : précompilateur, compilateur ou éditeur de liens**
@@ -150,11 +150,10 @@ Respectivement :
     + Le framebuffer permet de piloter les modes graphiques en haute résolution directement depuis le noyau Linux.
   + Lors des TPs, on a utilisé fbv (pour afficher des images sur l'écran)
   + Le RPI intègre le support du framebuffer <  + les framboises s'affichent lors du démarrage
-+ **L’exécution d’une application ncurses produit le message « cannot open terminal » et s’arrête. Quelle en est la cause et comment résoudre ce problème ?**
-  + Le fichier <ins>/etc/profile doit être exécutable</ins> et contenir au moins la ligne suivante :
-```bash
-export TERMINFO=/share/terminfo
-```
+  
++ **Pour activer le Framebuffer sur le système construit à partir d'un nouveau noyau et de Busybox, qu'avez-vous été amené à réaliser ?
+  + TODO
+
 ## RPI & Compilation Croisée
 + **Qu'est-ce qu'un compilateur croisé ? Comment vérifier pour quel système cible est produit un exécutable ?**
   + Un compilateur croisé produit un code exécutable à destination d'une architecture différente de celle sur laquelle il effectue la compilation.
@@ -166,11 +165,17 @@ export TERMINFO=/share/terminfo
   + **target** désigne l'architecture de la machine sur laquelle on effectue l'exécution du programme.
   + Ces deux paramètres sont différents dans le cas d'un compilateur croisé.
 
-+ **Qu'est-ce que les GPIO (acronyme, définition, usage) ? Contiennent-ils des entrées analogiques ? Quelle librairie permet de les manipuler ?**
++ **Qu'est-ce que les GPIO (acronyme, définition, usage) ? Contiennent-ils des entrées analogiques ? Quelle librairie permet de les manipuler ? Quel exécutable est proposé exploitant cette librairie ?**
   + GPIO signifie <ins>General Purpose Input Output</ins>
   + Il s'agit des ports d'entrées analogique et numérique pour RPI.
   + On peut les utiliser pour allumer des diodes sur un circuit électronique.
   + La librairie WiringPI permet de les manipuler.
+  + L'exécutable blink est proposé : ce dernier permet de faire clignoter une diode pendant l'exécution du programme.
+  
++ **Quel type de processeur équipe le Raspberry PI ? Le noyau utilisé par les OS précompilés fournis avec le RPI est-il compilé avec le support du framebuffer ? Comment le vérifier ?
+  + Processeur ARM.
+  + Le noyau fourni du RPI est compilé avec le support du framebuffer.
+  + Pour le vérifier, on doit voir une image de framboise lors du démarrage du RPI.
 
 ## Noyau Linux, Pilotes
 + **Vous êtes face à un ordinateur démarré sous Linux, sans interface graphique ni tournevis, comment savoir quelles sont les caractéristiques de sa carte réseau ?**
@@ -186,11 +191,10 @@ On peut utiliser l'une des commandes suivantes :
   + Le rootdelay permet d'attendre avant de monter le système de fichiers. On l'utilise lors du boot sur une clé, pour que la machine puisse avoir le temps de la détecter.
 
 + **Qu’appelle-t-on module dans le cadre de la construction du noyau d’un système Linux ?**
-Un module est un pilote de périphérique que l'on peut charger dynamiquement dans le noyau
-même après le démarrage. Ce sont des fichiers d'extension .ko dans /lib
+  + Un module est un pilote de périphérique que l'on peut charger dynamiquement dans le noyau même après le démarrage. Ce sont des fichiers d'extension .ko dans /lib
 
 + **Lors de l’utilisation de la commande make menuconfig , quel fichier est manipulé ?**
-Le fichier .config.
+  + Le fichier .config.
 
 + **Décrivez la procédure à adopter pour que la carte réseau de ce PC soit prise en charge par votre version de busybox sur Clé USB : 1) sans recompiler le noyau de la Ubuntu (deux cas sont à prévoir) 2) en recompilant un nouveau noyau sans prise en charge des modules chargeables.**
   1) Ajouter le support des cartes réseau dans Busybox (pour le 2e cas, démerdez vous).
@@ -276,3 +280,8 @@ exécuter le second script de démarrage qu'elle contient.
   + 4e étape : chargement du noyau
   + 5e étape : initrd pour le montage du système de fichiers temporaire.
   + 6e étape : démarrage du programme init et affichage du prompt.
+  
++ **Indiquez plusieurs manières permettant d'optimiser la taille d'une distribution linux embarquée.**
+  + Utiliser Busybox pour les utilitaires GNU/Unix.
+  + Compiler le noyau en dynamique.
+  + Configurer le noyau de façon à avoir que les options nécessaires.
