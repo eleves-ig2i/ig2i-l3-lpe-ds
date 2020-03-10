@@ -15,8 +15,8 @@ dmesg
 ```
 
 + **Quelle commande affiche la liste des montages en cours ? Comment n'afficher que les montages qui concernent des disques de type "sd" ?
-+ La commande `df`.
-+ La commande `df | grep sd`
+  + La commande `df`.
+  + La commande `df | grep sd`
 
 + **Quelle commande permet de partitionner un disque dur ? Indiquez les contraintes de nommage correspondant au partitionnement et la localisation de la table de partitions**
   + Partitionner : `fdisk <periphérique>`
@@ -35,11 +35,11 @@ dmesg
   + /etc/fstab
 
 + **Quelle commande permet de formater une partition ? Indiquez le rôle du paramètre j que nous avons employé en TP**
-`mkfs.ext3 -j /dev/sdc1`
--j : créer un système de fichiers sur chaque partition
+  + `mkfs.ext3 -j /dev/sdc1`
+  + -j : créer un système de fichiers sur chaque partition
 
 + **Indiquez quelles systèmes de fichiers créer et comment les produire pour préparer un OS pour RPI sur votre carte SD.**
-Systèmes de fichiers à créer :
+  + Systèmes de fichiers à créer :
 	+ Une partition fat32 (pour le boot) ; `mkfs.vfat <partition>`
 	+ une partition ext4 : `mkfs.ext4 <partition>`
 
@@ -171,6 +171,7 @@ export TERMINFO=/share/terminfo
   + Il s'agit des ports d'entrées analogique et numérique pour RPI.
   + On peut les utiliser pour allumer des diodes sur un circuit électronique.
   + La librairie WiringPI permet de les manipuler.
+
 ## Noyau Linux, Pilotes
 + **Vous êtes face à un ordinateur démarré sous Linux, sans interface graphique ni tournevis, comment savoir quelles sont les caractéristiques de sa carte réseau ?**
 On peut utiliser l'une des commandes suivantes :
@@ -195,6 +196,15 @@ Le fichier .config.
   1) Ajouter le support des cartes réseau dans Busybox (pour le 2e cas, démerdez vous).
   2) Cocher le driver de la carte en question lors de la configuration du nouveau noyau.
   
++ **Quelle commande permet d'afficher la version du noyau installée sur votre système Linux ?**
+  + `uname -r`
+  
++ **Une fois le noyau chargé et quelques messages de détection de périphériques obtenus, un message indiquant qu'il ne peut monter "root" apparaît et la machine bloque. Indiquez les causes possibles de dysfonctionnement, les solutions à apport et rappelez les paramètres du noyau Linux concernés (2 cas à citer).**
+  + TODO
+  
++ **Que signifie le z final ou initial du nom généralement attribué au noyau Linux (vmlinuz, zImage, bzImage, ...)
+  + Il indique que le noyau est compressé.
+  
 ## Busybox & systèmes embarqués
 + **Sur quelle mécanisme se fonde la distribution busybox ? Quel est son objectif ? Donnez un code d'exemple simple en C permettant de mettre en œuvre ce mécanisme.**
   + Busybox se fonde sur le mécanisme de liens symboliques, couplé au passage d'arguments à un programme en C.
@@ -207,16 +217,44 @@ int main(int argc, char ** argv)
 	printf("Programme : %s", argv[0]);
 }
 ```
+
 + **Dans le cadre de l’utilisation d’un OS busybox sur RPI, lors du démarrage d'une machine, le noyau se charge mais un message apparaît, indiquant « no init found », ou « cannot execute init ». Proposez trois causes possibles pour ce problème et les manières de le résoudre.**
-  + La description du système de fichiers est incorrect : modifier le fichier cmdline.txt de la 1ère partition (on doit avoir les paramètres `root=mmcblk0p2` et `rootfstype=ext4`
++ **Lors du démarrage d'une machine, le noyau se charge mais un message apparaît, indiquant "no init found", ou "cannot execute init". Proposez des causes possibles pour ce problème.**
+  + (RPI) La description du système de fichiers est incorrect : modifier le fichier cmdline.txt de la 1ère partition (on doit avoir les paramètres `root=mmcblk0p2` et `rootfstype=ext4`
   + Le système de fichiers est corrompu : on utilise la commande `e2fsck` sur le système de fichiers.
   + Absence ou modification du fichier init (donné par le lien symbolique /sbin/init en général) : rétablir le fichier ou réinstaller l'OS.
+  
++ **Indiquez les étapes de configuration permettant de gérer les utilisateurs dans un système Busybox. A cette occasion, on vous propose d'activer la permission setuid sur l'exécutable busybox. Comment faire ? A quoi cela sert-il ?
+  1. Lors de `make menuconfig` pour Busybox, ajouter les options correspondants aux commandes adduser, deluser, su, passwd.
+  2. Ajouter la ligne `tty1::respawn:/sbin/getty 38400 tty1` dans le fichier etc/inittab pour demander une authentification.
+  3. Créer les fichiers /etc/passwd et /etc/group avec l'utilisateur et le groupe root.
+  + chmod u+s busybox
+  + La permission setuid permet à l'utilisateur appelant de bénéficier des droits de l'utilisateur propriétaire de l'exécutable au moment de son exécution.
 
 ## Démarrage & Architecture de GNU/Linux
 + **Que contiennent /proc, /sys et /dev et à quoi cela sert-il ?**
   + /proc : Pseudo-système de fichiers d'informations sur les processus
   + /sys : Contient les informations systèmes et ses composants
   + /dev : Contient les informations sur les périphériques (devices)
+  
++ **Indiquez les répertoires standards que l'on trouve à la racine d'une arborescence Linux et leur utilité.**
+  + https://imgur.com/OqbRRDk
+  + cf slide "File Hierarchy Standard" du cours
+  
++ **Donnez le menu de grub permettant de booter sur une clé USB avec le noyau Ubuntu et son fichier initrd. A quoi sert ce fichier ? Quelles modifications faudra-t-il apporter pour booter un noyau recompilé par nos soins ?**
+  ```bash
+  menuentry 'LPE noyau Ubuntu' {
+        set root='hd0,msdos1'        
+        linux /boot/vmlinuz root=/dev/sdb1 rootdelay=5
+        initrd /boot/initrd.img
+  }
+  # Modifs à apporter pour booter un noyau recompilé
+  menuentry 'LPE noyau recompilé' {
+        set root='hd0,msdos1'        
+        linux /boot/bzImage root=/dev/sdb1 rootdelay=5
+  }
+  ```
+  + Le fichier grub.cfg définit le contenu du menu GRUB au démarrage.
 
 + **Qu’est-ce-que le MBR ? Où est-il situé sur un volume de stockage ? Quelle est sa taille en octets ? Que contient-il ? Quelles commandes permettent de le manipuler ?**
   + Master boot record.
