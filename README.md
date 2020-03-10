@@ -138,7 +138,7 @@ Respectivement :
   + **Connaître la liste des librairies dynamiques partagées nécessaires à l'exécution du programme helloDyn ?**
 + **Qu'indique la commande précédente appliquée à l'exécutable helloSta ?**
   + `gcc hello.c -o helloDyn`
-  + `gcc -static hello.c -o helloSta
+  + `gcc -static hello.c -o helloSta`
   + `ldd helloDyn`
   + helloSta n'est pas un exécutable dynamique.
 
