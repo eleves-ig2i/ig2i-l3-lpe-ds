@@ -151,7 +151,7 @@ Respectivement :
   + Lors des TPs, on a utilisé fbv (pour afficher des images sur l'écran)
   + Le RPI intègre le support du framebuffer <  + les framboises s'affichent lors du démarrage
   
-+ **Pour activer le Framebuffer sur le système construit à partir d'un nouveau noyau et de Busybox, qu'avez-vous été amené à réaliser ?
++ **Pour activer le Framebuffer sur le système construit à partir d'un nouveau noyau et de Busybox, qu'avez-vous été amené à réaliser ?**
   + TODO
 
 ## RPI & Compilation Croisée
@@ -172,7 +172,7 @@ Respectivement :
   + La librairie WiringPI permet de les manipuler.
   + L'exécutable blink est proposé : ce dernier permet de faire clignoter une diode pendant l'exécution du programme.
   
-+ **Quel type de processeur équipe le Raspberry PI ? Le noyau utilisé par les OS précompilés fournis avec le RPI est-il compilé avec le support du framebuffer ? Comment le vérifier ?
++ **Quel type de processeur équipe le Raspberry PI ? Le noyau utilisé par les OS précompilés fournis avec le RPI est-il compilé avec le support du framebuffer ? Comment le vérifier ?**
   + Processeur ARM.
   + Le noyau fourni du RPI est compilé avec le support du framebuffer.
   + Pour le vérifier, on doit voir une image de framboise lors du démarrage du RPI.
@@ -206,7 +206,7 @@ On peut utiliser l'une des commandes suivantes :
 + **Une fois le noyau chargé et quelques messages de détection de périphériques obtenus, un message indiquant qu'il ne peut monter "root" apparaît et la machine bloque. Indiquez les causes possibles de dysfonctionnement, les solutions à apport et rappelez les paramètres du noyau Linux concernés (2 cas à citer).**
   + TODO
   
-+ **Que signifie le z final ou initial du nom généralement attribué au noyau Linux (vmlinuz, zImage, bzImage, ...)
++ **Que signifie le z final ou initial du nom généralement attribué au noyau Linux (vmlinuz, zImage, bzImage, ...)**
   + Il indique que le noyau est compressé.
   
 ## Busybox & systèmes embarqués
@@ -228,7 +228,7 @@ int main(int argc, char ** argv)
   + Le système de fichiers est corrompu : on utilise la commande `e2fsck` sur le système de fichiers.
   + Absence ou modification du fichier init (donné par le lien symbolique /sbin/init en général) : rétablir le fichier ou réinstaller l'OS.
   
-+ **Indiquez les étapes de configuration permettant de gérer les utilisateurs dans un système Busybox. A cette occasion, on vous propose d'activer la permission setuid sur l'exécutable busybox. Comment faire ? A quoi cela sert-il ?
++ **Indiquez les étapes de configuration permettant de gérer les utilisateurs dans un système Busybox. A cette occasion, on vous propose d'activer la permission setuid sur l'exécutable busybox. Comment faire ? A quoi cela sert-il ?**
   1. Lors de `make menuconfig` pour Busybox, ajouter les options correspondants aux commandes adduser, deluser, su, passwd.
   2. Ajouter la ligne `tty1::respawn:/sbin/getty 38400 tty1` dans le fichier etc/inittab pour demander une authentification.
   3. Créer les fichiers /etc/passwd et /etc/group avec l'utilisateur et le groupe root.
