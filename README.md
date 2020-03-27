@@ -36,7 +36,7 @@ dmesg
 
 + **Quelle commande permet de formater une partition ? Indiquez le rôle du paramètre j que nous avons employé en TP**
   + `mkfs.ext3 -j /dev/sdc1`
-  + -j : créer un système de fichiers sur chaque partition
+  + -j : créer un système de logs sur la partition. 
 
 + **Indiquez quelles systèmes de fichiers créer et comment les produire pour préparer un OS pour RPI sur votre carte SD.**
   + Systèmes de fichiers à créer :
@@ -167,7 +167,7 @@ Respectivement :
 
 + **Qu'est-ce que les GPIO (acronyme, définition, usage) ? Contiennent-ils des entrées analogiques ? Quelle librairie permet de les manipuler ? Quel exécutable est proposé exploitant cette librairie ?**
   + GPIO signifie <ins>General Purpose Input Output</ins>
-  + Il s'agit des ports d'entrées analogique et numérique pour RPI.
+  + Il s'agit des ports d'entrée et de sortie numériques pour RPI.
   + On peut les utiliser pour allumer des diodes sur un circuit électronique.
   + La librairie WiringPI permet de les manipuler.
   + L'exécutable blink est proposé : ce dernier permet de faire clignoter une diode pendant l'exécution du programme.
